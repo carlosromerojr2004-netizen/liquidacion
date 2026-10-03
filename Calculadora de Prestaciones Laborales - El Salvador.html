@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculadora de Prestaciones Laborales - El Salvador</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f8fafc;--card:#ffffff;--tx:#1e293b;--mut:#64748b;--bd:#e2e8f0;--pri:#2563eb;--pri-hov:#1d4ed8;--sec:#0ea5e9;--err:#ef4444;--font:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f172a;--card:#1e293b;--tx:#f1f5f9;--mut:#94a3b8;--bd:#334155;--pri:#3b82f6;--pri-hov:#60a5fa;--sec:#38bdf8;--err:#f87171}}
+:root[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--tx:#f1f5f9;--mut:#94a3b8;--bd:#334155;--pri:#3b82f6;--pri-hov:#60a5fa;--sec:#38bdf8;--err:#f87171}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased}
+main{max-width:1100px;margin:0 auto;padding:40px 20px 80px;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+h1{grid-column:1/-1;text-align:center;color:var(--tx);font-size:1.8rem;font-weight:700;margin:0 0 24px;position:relative;padding-bottom:16px}
+h1::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:80px;height:4px;background:var(--pri);border-radius:2px}
+h2{color:var(--tx);margin:0 0 20px;font-size:1.25rem;font-weight:600;border-bottom:2px solid var(--bd);padding-bottom:12px}
+h3{color:var(--tx);margin:0 0 16px;font-size:1.1rem;font-weight:600;display:flex;align-items:center;gap:8px}
+h3::before{content:'';display:inline-block;width:4px;height:16px;background:var(--sec);border-radius:4px}
+.blk,.panel{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:28px;box-shadow:0 4px 6px -1px rgba(0,0,0,.05),0 2px 4px -2px rgba(0,0,0,.05);margin-bottom:20px;transition:box-shadow .2s ease-in-out}
+.blk:hover{box-shadow:0 10px 15px -3px rgba(0,0,0,.05),0 4px 6px -4px rgba(0,0,0,.05)}
+.panel{position:sticky;top:30px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{display:block;font-size:.85rem;font-weight:600;margin-bottom:6px;color:var(--tx)}
+input,select{width:100%;box-sizing:border-box;padding:10px 14px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font-family:inherit;font-size:.95rem;transition:all .2s;outline:none}
+input:focus,select:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(37,99,235,.15);background:var(--card)}
+input[readonly]{background:var(--bd);cursor:not-allowed;opacity:.7;border-style:dashed}
+.chk{display:flex;gap:10px;align-items:center;margin-bottom:16px;background:var(--bg);padding:12px 16px;border-radius:8px;border:1px solid var(--bd)}
+.chk input{width:18px;height:18px;cursor:pointer;accent-color:var(--pri)}
+.chk label{margin:0;font-weight:500;cursor:pointer;font-size:.9rem}
+button{width:100%;padding:14px;border:0;border-radius:8px;background:var(--pri);color:#fff;font-weight:600;font-size:1rem;cursor:pointer;transition:background-color .2s,transform .1s;letter-spacing:.02em;margin-top:10px}
+button:hover{background:var(--pri-hov)}
+button:active{transform:scale(.98)}
+button.alt{background:transparent;color:var(--pri);border:2px solid var(--pri)}
+button.alt:hover{background:rgba(37,99,235,.05)}
+button.sm{width:auto;padding:8px 16px;font-size:.85rem;margin:8px 0 0}
+#err{color:var(--err);font-size:.9rem;font-weight:500;min-height:1.5em;margin:12px 0;display:flex;align-items:center}
+#err:not(:empty)::before{content:'⚠ ';margin-right:6px}
+small,.note{color:var(--mut);font-size:.8rem;display:block;margin-top:6px;line-height:1.5}
+.meta{font-size:.85rem;line-height:1.6;margin-bottom:20px;padding:16px;background:var(--bg);border-radius:8px;border-left:4px solid var(--pri)}
+table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:10px}
+td,th{padding:12px 10px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:middle}
+th{color:var(--mut);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--bd)}
+td:last-child,th:last-child{text-align:right;font-family:'JetBrains Mono','Courier New',monospace;font-weight:500;white-space:nowrap}
+tr:hover td{background-color:rgba(0,0,0,.02)}
+@media(prefers-color-scheme:dark){tr:hover td{background-color:rgba(255,255,255,.02)}}
+.sub td{font-weight:600;background:var(--bg);color:var(--tx);font-size:.85rem}
+.tot td{font-weight:700;font-size:1.1rem;color:var(--pri);border-top:2px solid var(--pri);background:rgba(37,99,235,.05)}
+.sig{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px;font-size:.85rem;color:var(--mut);text-align:center}
+.sig div{border-top:1px solid var(--bd);padding-top:12px}
+[hidden]{display:none!important}
+.form,.panel{min-width:0}
+#codeBox{box-sizing:border-box;width:100%;max-width:100%;margin-top:12px;padding:10px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;font:.7rem/1.45 "JetBrains Mono","Courier New",monospace;overflow:auto;max-height:260px;white-space:pre;color:var(--tx)}
+.hr{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;gap:8px;margin-top:10px;align-items:center;background:var(--bg);padding:12px;border-radius:8px;border:1px solid var(--bd)}
+.as{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-top:12px;font-size:.85rem;padding:16px;background:var(--bg);border-radius:8px;border:1px solid var(--bd)}
+.as label{font-weight:400;margin:0;display:flex;gap:8px;align-items:center;cursor:pointer}
+.as input{width:16px;height:16px;accent-color:var(--pri)}
+.q{margin-top:20px}
+details{background:var(--bg);padding:16px;border-radius:8px;border:1px solid var(--bd);cursor:pointer}
+details summary{font-weight:600;color:var(--tx);outline:none;user-select:none}
+details>*:not(summary){margin-top:16px;cursor:default}
+@media print{
+:root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--bg:#fff;--card:#fff;--tx:#000;--mut:#333;--bd:#ccc;--pri:#000;--sec:#000}
+body{background:#fff;color:#000;font-size:11pt}
+.hint,.form,h1,button,details{display:none!important}
+main{display:block;padding:0;max-width:none}
+.panel{border:0;padding:0;box-shadow:none;position:static}
+td:last-child{color:#000}
+table{border:1px solid #ccc}
+td,th{border-bottom:1px solid #ccc;padding:8px}
+.tot td{border-top:2px solid #000;background:none;color:#000}
+.meta{border-left:2px solid #000;background:none;padding:0 0 0 12px;margin-bottom:15px}
+.sig div{border-top:1px solid #000;color:#000}}
+</style></head><body><main>
+<h1>Calculadora de Prestaciones Laborales (El Salvador)</h1>
+<div class="form">
+<div class="blk"><h3>Datos generales (para el comprobante)</h3><div class="g">
+<div><label for="nom">Persona trabajadora</label><input id="nom" placeholder="Nombre completo"></div>
+<div><label for="dui">DUI</label><input id="dui" placeholder="00000000-0"></div>
+<div><label for="pat">Patrono</label><input id="pat"></div>
+<div><label for="cargo">Cargo</label><input id="cargo"></div>
+<div><label for="fi">Fecha de inicio *</label><input type="date" id="fi"></div>
+<div><label for="ff">Fecha de fin *</label><input type="date" id="ff"></div></div>
+<small>* Obligatorias: con ellas se calculan la antigüedad (años y meses) y las fracciones.</small></div>
+<div class="blk"><h3>1. Datos financieros y antigüedad</h3>
+<label for="sal">Ingreso mensual (USD)</label><input type="number" id="sal" min="0" step="0.01" placeholder="Ej. 600.00">
+<div class="g" style="margin-top:8px"><div><label for="an">Años laborados</label><input type="number" id="an" min="0" step="1" value="0" readonly></div>
+<div><label for="me">Meses laborados (0-11)</label><input type="number" id="me" min="0" max="11" step="1" value="0" readonly></div></div>
+<div class="q"><label for="lv">¿Cuándo fueron sus últimas vacaciones? (calendario)</label><input type="date" id="lv"><small>Vacío = al día (se cuenta desde el último aniversario). Si pasó más de un año, se pagan períodos completos más la fracción.</small></div></div>
+<div class="blk"><h3>2. Causa de finalización</h3><label for="mot">Tipo de cierre</label>
+<select id="mot"><option value="despido">Despido injustificado</option><option value="renuncia">Renuncia voluntaria</option></select>
+<div class="q" id="renDiv" hidden><label for="inf">¿Informó por escrito al patrono (preaviso)?</label><select id="inf"><option value="">Selecciona…</option><option value="si">Sí</option><option value="no">No</option></select><small>Si no informó, la compensación es $0.00; las demás prestaciones sí se calculan.</small></div></div>
+<div class="blk"><h3>3. Jornadas extraordinarias y días especiales</h3>
+<div class="chk"><input type="checkbox" id="na"><label for="na">No aplica</label></div>
+<div id="ex">
+<label for="asQ">¿Trabajó días de asueto?</label><select id="asQ"><option value="">Selecciona…</option><option value="no">No</option><option value="si">Sí</option></select>
+<div id="asList" class="as" hidden></div>
+<div class="q"><label for="heQ">¿Tiene horas extras no pagadas?</label><select id="heQ"><option value="">Selecciona…</option><option value="no">No</option><option value="si">Sí</option></select></div>
+<div id="heBox" hidden><small>Registra fecha y hora: el sistema deduce si son diurnas o nocturnas (nocturno = 7:00 pm a 6:00 am).</small><div id="heRows"></div><button type="button" class="alt sm" id="addHe">+ Agregar registro</button></div>
+<div class="q"><label for="de">Días de descanso semanal laborados</label><input type="number" id="de" min="0" value="0"></div></div></div>
+<div id="err" role="alert"></div>
+<button id="calc">Calcular liquidación</button>
+<button class="alt" id="vc" aria-expanded="false">Ver código de las fórmulas</button>
+<pre id="codeBox" hidden></pre>
+</div>
+
+<section class="panel" aria-live="polite">
+<h2>Comprobante de liquidación de prestaciones</h2>
+<div class="meta" id="meta">Completa el formulario y presiona “Calcular liquidación”.</div>
+<table>
+<tr><th>Concepto</th><th>Base legal</th><th>Monto</th></tr>
+<tr><td>Vacación proporcional</td><td class="note">Arts. 177 y 187 CT</td><td id="r_vac">$0.00</td></tr>
+<tr><td>Aguinaldo proporcional</td><td class="note">Arts. 196-198 CT</td><td id="r_agu">$0.00</td></tr>
+<tr><td id="l_ind">Indemnización / compensación</td><td class="note" id="b_ind">Art. 58 CT</td><td id="r_ind">$0.00</td></tr>
+<tr><td>Horas extras diurnas</td><td class="note">Art. 169 CT</td><td id="r_hd">$0.00</td></tr>
+<tr><td>Horas extras nocturnas</td><td class="note">Arts. 168 y 169 CT</td><td id="r_hn">$0.00</td></tr>
+<tr><td>Días de asueto laborados</td><td class="note">Art. 192 CT</td><td id="r_as">$0.00</td></tr>
+<tr><td>Días de descanso semanal laborados</td><td class="note">Arts. 175 y 176 CT</td><td id="r_de">$0.00</td></tr>
+<tr class="tot"><td colspan="2">TOTAL DEVENGADO (BRUTO)</td><td id="r_tot">$0.00</td></tr>
+<tr class="sub"><td colspan="3">Deducciones de ley</td></tr>
+<tr><td colspan="2">Remuneración gravada / exenta</td><td id="r_gr">—</td></tr>
+<tr><td>Cotización ISSS (trabajador)</td><td class="note">3%, base máx. $1,000</td><td id="r_isss">$0.00</td></tr>
+<tr><td>Cotización AFP (trabajador)</td><td class="note">7.25%</td><td id="r_afp">$0.00</td></tr>
+<tr><td>Retención de ISR</td><td class="note">Tabla mensual, Ley de ISR</td><td id="r_isr">$0.00</td></tr>
+<tr><td colspan="2">Total de deducciones</td><td id="r_ded">$0.00</td></tr>
+<tr class="tot"><td colspan="2">MONTO NETO A PAGAR</td><td id="r_net">$0.00</td></tr>
+</table>
+<p class="meta" id="letras"></p>
+<div class="sig"><div>Persona trabajadora<br>Nombre / DUI / Fecha</div><div>Patrono o representante legal<br>Nombre / DUI / Fecha</div></div>
+<p class="note">Comprobante informativo del cálculo; NO constituye el finiquito laboral. Conforme al Art. 402 del Código de Trabajo, la renuncia, el mutuo consentimiento o el recibo de pago por despido sin causa solo tienen valor probatorio en hojas de la Dirección General de Inspección de Trabajo, ante juez laboral, o en documento privado autenticado ante notario. Renuncia voluntaria: Decreto 592 (mínimo 2 años, tope 2× salario mínimo diario). Se recomienda asesoría legal profesional.</p>
+<button class="alt" id="prt">Imprimir / guardar como PDF</button>
+<p class="note hint">Si el botón no responde, presiona Ctrl+P (Cmd+P en Mac) y elige “Guardar como PDF”. Calcula primero para que el comprobante tenga datos.</p>
+</section>
+<script>
+const CFG={smd:13.44,topeD:4,topeR:2,prima:1.3,agui:[[10,21],[3,19],[1,15]],recDe:1.5,isss:[.03,1000],afp:.0725,
+ isr:[[550,0,0,0],[895.24,550,.10,17.67],[2038.10,895.24,.20,60],[Infinity,2038.10,.30,288.57]]};
+const $=i=>document.getElementById(i),c=x=>Math.round((x+1e-9)*100)/100;
+const $$=n=>(n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const U=['','UN','DOS','TRES','CUATRO','CINCO','SEIS','SIETE','OCHO','NUEVE','DIEZ','ONCE','DOCE','TRECE','CATORCE','QUINCE','DIECISEIS','DIECISIETE','DIECIOCHO','DIECINUEVE','VEINTE','VEINTIUN','VEINTIDOS','VEINTITRES','VEINTICUATRO','VEINTICINCO','VEINTISEIS','VEINTISIETE','VEINTIOCHO','VEINTINUEVE'];
+const D=['','','','TREINTA','CUARENTA','CINCUENTA','SESENTA','SETENTA','OCHENTA','NOVENTA'];
+const C=['','CIENTO','DOSCIENTOS','TRESCIENTOS','CUATROCIENTOS','QUINIENTOS','SEISCIENTOS','SETECIENTOS','OCHOCIENTOS','NOVECIENTOS'];
+function w(n){if(n===0)return 'CERO';let s='';
+ if(n>=1e6){const m=Math.floor(n/1e6);s+=(m===1?'UN MILLON':w(m)+' MILLONES')+' ';n%=1e6}
+ if(n>=1000){const k=Math.floor(n/1000);s+=(k===1?'MIL':w(k)+' MIL')+' ';n%=1000}
+ if(n===100)s+='CIEN';else if(n){const h=Math.floor(n/100);if(h)s+=C[h]+' ';n%=100;
+  if(n<30)s+=U[n];else{s+=D[Math.floor(n/10)];if(n%10)s+=' Y '+U[n%10]}}
+ return s.trim()}
+function letras(v){const e=Math.floor(v),ct=Math.round((v-e)*100);
+ return w(e)+' '+String(ct).padStart(2,'0')+'/100 DOLARES DE LOS ESTADOS UNIDOS DE AMERICA'}
+function dt(v){const [y,m,d]=v.split('-').map(Number);return new Date(Date.UTC(y,m-1,d))}
+function diff(a,b){let y=b.getUTCFullYear()-a.getUTCFullYear();
+ let n=new Date(Date.UTC(a.getUTCFullYear()+y,a.getUTCMonth(),a.getUTCDate()));
+ if(n>b){y--;n=new Date(Date.UTC(a.getUTCFullYear()+y,a.getUTCMonth(),a.getUTCDate()))}
+ let m=(b.getUTCMonth()-a.getUTCMonth()+12)%12;if(b.getUTCDate()<a.getUTCDate())m=(m+11)%12;
+ return{y,m,d:Math.round((b-n)/864e5)}}
+function dates(){const i=$('fi').value,f=$('ff').value;if(!i||!f)return null;
+ const a=dt(i),b=dt(f);if(b<a)return null;return{a,b,...diff(a,b)}}
+function syncDates(){const r=dates();if(r){$('an').value=r.y;$('me').value=r.m}}
+['fi','ff'].forEach(i=>$(i).addEventListener('change',syncDates));
+$('na').addEventListener('change',()=>{const on=$('na').checked;
+ if(on){['asQ','heQ'].forEach(i=>{$(i).value='no';$(i).dispatchEvent(new Event('change'))});$('de').value=0}else{['asQ','heQ'].forEach(i=>{$(i).value='';$(i).dispatchEvent(new Event('change'))})}
+ document.querySelectorAll('#ex input,#ex select,#ex button').forEach(x=>x.disabled=on)});
+const AS=['1 de enero','Jueves Santo','Viernes Santo','Sábado Santo','1 de mayo','10 de mayo (Día de la Madre)','17 de junio (Día del Padre)','3 de agosto (San Salvador)','5 de agosto (San Salvador)','6 de agosto','15 de septiembre','2 de noviembre','25 de diciembre','Fiesta patronal local'];
+$('asList').innerHTML=AS.map(t=>'<label><input type="checkbox">'+t+'</label>').join('');
+$('asQ').addEventListener('change',()=>{const on=$('asQ').value==='si';$('asList').hidden=!on;if(!on)document.querySelectorAll('#asList input').forEach(i=>i.checked=false)});
+function addRow(){const d=document.createElement('div');d.className='hr';d.innerHTML='<input type="date" aria-label="Fecha"><input type="time" aria-label="Inicio"><input type="time" aria-label="Fin"><button type="button" class="alt sm" aria-label="Quitar">✕</button>';d.querySelector('button').onclick=()=>d.remove();$('heRows').appendChild(d)}
+$('heQ').addEventListener('change',()=>{const on=$('heQ').value==='si';$('heBox').hidden=!on;if(on&&!$('heRows').children.length)addRow();if(!on)$('heRows').innerHTML=''});
+$('addHe').addEventListener('click',addRow);
+$('mot').addEventListener('change',()=>{$('renDiv').hidden=$('mot').value!=='renuncia'});
+function isr(b){if(b<=550)return 0;const t=CFG.isr.find(t=>b<=t[0]);return t[3]+(b-t[1])*t[2]}
+function calcular(){
+ const e=$('err');e.textContent='';
+ const sal=parseFloat($('sal').value),smd=CFG.smd;
+ const nv=id=>Math.max(0,parseFloat($(id).value)||0);
+ if(!(sal>0))return e.textContent='Ingresa un ingreso mensual mayor a 0.';
+ if(!$('fi').value||!$('ff').value)return e.textContent='Indica la fecha de inicio y la fecha de fin.';
+ const r=dates();if(!r)return e.textContent='La fecha de fin no puede ser anterior a la de inicio.';
+ const req=(id,m)=>{e.textContent=m;$(id).focus()};
+ if($('mot').value==='renuncia'&&!$('inf').value)return req('inf','Indica si la persona informó al patrono.');
+ if(!$('na').checked){
+  if(!$('asQ').value)return req('asQ','Responde si trabajó días de asueto.');
+  if($('asQ').value==='si'&&!document.querySelector('#asList input:checked'))return req('asQ','Marca al menos un día de asueto.');
+  if(!$('heQ').value)return req('heQ','Responde si tiene horas extras no pagadas.')}
+ syncDates();
+ const fr=Math.min(1,r.d/360),anios=r.y,yrs=anios+fr,sd=sal/30,sh=sd/8,mot=$('mot').value,notas=[];
+ let per=fr;
+ if($('lv').value){const l=dt($('lv').value);if(l<r.a||l>r.b)return e.textContent='La fecha de últimas vacaciones debe estar entre el inicio y el fin.';per=Math.round((r.b-l)/864e5)/360}
+ const pc=Math.floor(per+1e-9);
+ notas.push('Vacaciones: '+pc+' período(s) completo(s) + fracción de '+Math.round((per-pc)*360)+' días');
+ const vac=c(sd*15*CFG.prima*per);
+ const dias=CFG.agui.find(t=>anios>=t[0])?.[1]??15;
+ const j=new Date(Date.UTC(r.b.getUTCFullYear(),0,1)),oct=new Date(Date.UTC(r.b.getUTCFullYear(),9,1));
+ const comp=r.b>=oct&&anios>=1;
+ const fa=comp?1:Math.min(1,Math.round((r.b-(r.a>j?r.a:j))/864e5)/360);
+ notas.push('Aguinaldo: '+(comp?'completo (fin desde el 1 de octubre)':'proporcional (fin antes del 1 de octubre o menos de 1 año de servicio)'));
+ const agu=c(sd*dias*fa);
+ let ind=0;
+ if(mot==='despido')ind=c(Math.max(Math.min(sd,CFG.topeD*smd)*30*yrs,Math.min(sd,CFG.topeD*smd)*15));
+ else if($('inf').value==='no')notas.push('Renuncia sin informar al patrono: no corresponde compensación.');
+ else if(anios>=2)ind=c(Math.min(sd,CFG.topeR*smd)*15*yrs);
+ else notas.push('Renuncia con menos de 2 años de servicio: no corresponde compensación.');
+ let Hd=0,Hn=0;
+ if($('heQ').value==='si')for(const x of document.querySelectorAll('.hr')){
+  const[f,s1,e1]=[...x.querySelectorAll('input')].map(i=>i.value);
+  if(!f||!s1||!e1)return e.textContent='Completa fecha, hora de inicio y hora de fin en cada registro de horas extras.';
+  const m=v=>{const[h,mi]=v.split(':').map(Number);return h*60+mi};
+  const a1=m(s1);let b1=m(e1);if(b1<=a1)b1+=1440;
+  let n=0;[[0,360],[1140,1800],[2580,3240]].forEach(([p,q])=>n+=Math.max(0,Math.min(b1,q)-Math.max(a1,p)));
+  Hn+=n/60;Hd+=(b1-a1-n)/60}
+ notas.push('Horas extras deducidas: '+Hd.toFixed(2)+' diurnas y '+Hn.toFixed(2)+' nocturnas');
+ const nAs=$('asQ').value==='si'?document.querySelectorAll('#asList input:checked').length:0;
+ const hd=c(Hd*sh*2),hn=c(Hn*sh*2.5),as=c(nAs*sd*2),de=c(nv('de')*sd*CFG.recDe);
+ const tot=c(vac+agu+ind+hd+hn+as+de);
+ const gr=c(vac+hd+hn+as+de),ex=c(agu+ind);
+ const isss=c(Math.min(gr,CFG.isss[1])*CFG.isss[0]),afp=c(gr*CFG.afp);
+ const rt=c(isr(gr-isss-afp)),ded=c(isss+afp+rt),net=c(tot-ded);
+ const set=(k,v)=>$('r_'+k).textContent=$$(v);
+ Object.entries({vac,agu,ind,hd,hn,as,de,tot,isss,afp,isr:rt,ded,net}).forEach(([k,v])=>set(k,v));
+ $('r_isss').textContent='-'+$$(isss);$('r_afp').textContent='-'+$$(afp);$('r_isr').textContent='-'+$$(rt);$('r_ded').textContent='-'+$$(ded);
+ $('r_gr').textContent=$$(gr)+' / '+$$(ex);
+ $('l_ind').textContent=mot==='despido'?'Indemnización por despido injustificado':'Compensación por renuncia voluntaria';
+ $('b_ind').textContent=mot==='despido'?'Art. 58 CT (tope 4× SMD, mín. 15 días)':'Decreto 592 (tope 2× SMD)';
+ $('letras').textContent='Monto neto en letras: '+letras(net);
+ const t=x=>$(x).value||'—';
+ $('meta').innerHTML='';const m=$('meta');
+ [['Persona trabajadora',t('nom')+' (DUI '+t('dui')+')'],['Patrono / cargo',t('pat')+' / '+t('cargo')],
+  ['Salario mensual',$$(sal)],['Ingreso → terminación',t('fi')+' → '+t('ff')],
+  ['Antigüedad',anios+' años, '+r.m+' meses'],['Causa',mot==='despido'?'Despido sin causa justificada':'Renuncia voluntaria']]
+  .forEach(([k,v])=>{const d=document.createElement('div');const b=document.createElement('b');b.textContent=k+': ';d.append(b,document.createTextNode(v));m.appendChild(d)});
+ notas.forEach(t=>{const d=document.createElement('div');d.className='note';d.textContent='• '+t;m.appendChild(d)});
+}
+$('calc').addEventListener('click',calcular);
+$('vc').addEventListener('click',()=>{const b=$('codeBox'),open=b.hidden;
+ if(open&&!b.textContent)b.textContent='// Parámetros legales (CFG); smd = salario mínimo diario del sector\nconst CFG = {\n'+Object.entries(CFG).map(([k,v])=>'  '+k+': '+JSON.stringify(v,(q,z)=>z===Infinity?'Infinity':z)).join(',\n')+'\n};\n\n'+isr.toString()+'\n\n'+calcular.toString();
+ b.hidden=!open;$('vc').setAttribute('aria-expanded',open);$('vc').textContent=open?'Ocultar código':'Ver código de las fórmulas'});
+$('prt').addEventListener('click',()=>{try{window.print()}catch(x){}});
+</script></main></body></html>
