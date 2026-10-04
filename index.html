@@ -53,7 +53,11 @@
 
       body {
         margin: 0;
-        background: var(--bg);
+        background:
+          radial-gradient(ellipse at 12% 8%, rgba(14, 165, 233, 0.12), transparent 38%),
+          radial-gradient(ellipse at 88% 92%, rgba(37, 99, 235, 0.1), transparent 42%),
+          var(--bg);
+        background-attachment: fixed;
         color: var(--tx);
         font-family: var(--font);
         line-height: 1.5;
@@ -181,7 +185,7 @@
 
       .blk,
       .panel {
-        animation: fadeUp 0.55s ease both;
+        animation: softPop 0.55s ease both;
       }
 
       .form .blk:nth-child(1) {
@@ -894,7 +898,7 @@
             </div>
             <div>
               <label for="dui">DUI</label>
-              <input id="dui" placeholder="00000000-0" />
+              <input id="dui" placeholder="00000000-0" maxlength="10" inputmode="numeric" />
             </div>
             <div>
               <label for="pat">Patrono</label>
@@ -1141,7 +1145,6 @@
         </p>
 
         <button class="alt" id="prt">Imprimir / guardar como PDF</button>
-        <button class="alt" id="excelBtn" type="button">Exportar a Excel</button>
         <p class="note hint">Si el botón no responde, presiona Ctrl+P (Cmd+P en Mac) y elige “Guardar como PDF”. Calcula primero para que el comprobante tenga datos.</p>
       </section>
     </main>
@@ -1169,6 +1172,13 @@
       const $$ = (n) => (n < 0 ? '-' : '') + '$' + Math.abs(n).toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
+      });
+
+      $('dui').addEventListener('input', (event) => {
+        const digits = event.target.value.replace(/\D/g, '').slice(0, 9);
+        event.target.value = digits.length > 8
+          ? digits.slice(0, 8) + '-' + digits.slice(8)
+          : digits;
       });
 
       const U = [
