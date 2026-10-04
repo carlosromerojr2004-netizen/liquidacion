@@ -76,27 +76,180 @@
         }
       }
 
-      h1 {
-        grid-column: 1 / -1;
-        text-align: center;
-        color: var(--tx);
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin: 0 0 24px;
-        position: relative;
-        padding-bottom: 16px;
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
-      h1::after {
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.18);
+        }
+        50% {
+          box-shadow: 0 0 0 10px rgba(37, 99, 235, 0.04);
+        }
+      }
+
+      @keyframes softPop {
+        from {
+          opacity: 0;
+          transform: translateY(12px) scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes softReveal {
+        from {
+          opacity: 0;
+          transform: translateX(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .page-title {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        text-align: center;
+        color: var(--tx);
+        margin: 0 0 24px;
+        position: relative;
+        padding-bottom: 18px;
+        letter-spacing: -0.02em;
+        animation: fadeUp 0.7s ease both;
+      }
+
+      .title-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--pri);
+        background: rgba(37, 99, 235, 0.08);
+        border: 1px solid rgba(37, 99, 235, 0.15);
+      }
+
+      .title-main {
+        display: block;
+        font-size: clamp(1.5rem, 3vw, 2.5rem);
+        line-height: 1.15;
+        font-weight: 800;
+        color: var(--tx);
+      }
+
+      .title-sub {
+        display: block;
+        font-size: 0.82rem;
+        color: var(--mut);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .page-title::after {
         content: '';
         position: absolute;
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
-        width: 80px;
+        width: 90px;
         height: 4px;
-        background: var(--pri);
-        border-radius: 2px;
+        background: linear-gradient(90deg, var(--sec), var(--pri));
+        border-radius: 999px;
+        animation: pulseGlow 2.4s ease-in-out infinite;
+      }
+
+      .blk,
+      .panel {
+        animation: fadeUp 0.55s ease both;
+      }
+
+      .form .blk:nth-child(1) {
+        animation-delay: 0.08s;
+      }
+
+      .form .blk:nth-child(2) {
+        animation-delay: 0.16s;
+      }
+
+      .form .blk:nth-child(3) {
+        animation-delay: 0.24s;
+      }
+
+      .form .blk:nth-child(4) {
+        animation-delay: 0.32s;
+      }
+
+      .form > #err,
+      .form > #calc,
+      .form > #vc {
+        animation: softPop 0.45s ease both;
+      }
+
+      .form > #calc {
+        animation-delay: 0.36s;
+      }
+
+      .form > #vc {
+        animation-delay: 0.42s;
+      }
+
+      .panel {
+        animation-delay: 0.18s;
+      }
+
+      .blk,
+      .panel {
+        background: var(--card);
+        border: 1px solid var(--bd);
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+      }
+
+      .blk:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        transform: translateY(-2px);
+      }
+
+      .panel {
+        position: sticky;
+        top: 30px;
+      }
+
+      button {
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(37, 99, 235, 0.18);
+      }
+
+      button.alt:hover {
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.08);
       }
 
       h2 {
@@ -172,8 +325,13 @@
         color: var(--tx);
         font-family: inherit;
         font-size: 0.95rem;
-        transition: all 0.2s;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
         outline: none;
+      }
+
+      input:hover,
+      select:hover {
+        border-color: var(--pri);
       }
 
       input:focus,
@@ -225,7 +383,7 @@
         font-weight: 600;
         font-size: 1rem;
         cursor: pointer;
-        transition: background-color 0.2s, transform 0.1s;
+        transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         letter-spacing: 0.02em;
         margin-top: 10px;
       }
@@ -236,6 +394,13 @@
 
       button:active {
         transform: scale(0.98);
+      }
+
+      button:focus-visible,
+      input:focus-visible,
+      select:focus-visible {
+        outline: 2px solid var(--sec);
+        outline-offset: 2px;
       }
 
       button.alt {
@@ -421,6 +586,14 @@
         background: var(--card);
         border: 1px solid var(--bd);
         border-radius: 8px;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        animation: softPop 0.35s ease both;
+      }
+
+      .formula-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--pri);
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.08);
       }
 
       .formula-card h4 {
@@ -514,6 +687,33 @@
         width: 100%;
         min-width: 0;
         table-layout: fixed;
+      }
+
+      .table-wrap tr:not(:first-child) {
+        animation: softReveal 0.35s ease both;
+      }
+
+      .table-wrap tr:nth-child(2) { animation-delay: 0.03s; }
+      .table-wrap tr:nth-child(3) { animation-delay: 0.06s; }
+      .table-wrap tr:nth-child(4) { animation-delay: 0.09s; }
+      .table-wrap tr:nth-child(5) { animation-delay: 0.12s; }
+      .table-wrap tr:nth-child(6) { animation-delay: 0.15s; }
+      .table-wrap tr:nth-child(7) { animation-delay: 0.18s; }
+      .table-wrap tr:nth-child(8) { animation-delay: 0.21s; }
+      .table-wrap tr:nth-child(9) { animation-delay: 0.24s; }
+      .table-wrap tr:nth-child(n+10) { animation-delay: 0.27s; }
+
+      .table-wrap td {
+        transition: background-color 0.2s ease, color 0.2s ease;
+      }
+
+      .sig div {
+        transition: border-color 0.2s ease, color 0.2s ease;
+      }
+
+      .sig div:hover {
+        border-color: var(--pri);
+        color: var(--tx);
       }
 
       .table-wrap th:first-child,
@@ -663,11 +863,26 @@
           color: #000;
         }
       }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
     </style>
   </head>
   <body>
     <main>
-      <h1>Calculadora de Prestaciones Laborales (El Salvador)</h1>
+      <h1 class="page-title">
+        <span class="title-badge">Prestaciones laborales</span>
+        <span class="title-main">Calculadora de Prestaciones Laborales</span>
+        <span class="title-sub">El Salvador</span>
+      </h1>
 
       <div class="form">
         <div class="blk">
@@ -926,6 +1141,7 @@
         </p>
 
         <button class="alt" id="prt">Imprimir / guardar como PDF</button>
+        <button class="alt" id="excelBtn" type="button">Exportar a Excel</button>
         <p class="note hint">Si el botón no responde, presiona Ctrl+P (Cmd+P en Mac) y elige “Guardar como PDF”. Calcula primero para que el comprobante tenga datos.</p>
       </section>
     </main>
