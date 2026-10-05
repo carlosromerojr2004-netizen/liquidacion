@@ -1020,7 +1020,7 @@
           <article class="formula-card">
             <h4>Aguinaldo → fila “Aguinaldo proporcional”</h4>
             <code>Salario diario × días por antigüedad × proporción del período</code>
-            <p>Los días por antigüedad son 15, 19 o 21. El cálculo usa el período completo cuando corresponde según la antigüedad y fecha de terminación; en caso contrario, aplica una proporción.</p>
+            <p>Se calcula al cumplir al menos un año de servicio. Los días por antigüedad son 15, 19 o 21; después del primer año, se paga el período completo cuando corresponde según la fecha de terminación o la proporción aplicable.</p>
           </article>
           <article class="formula-card">
             <h4>Indemnización o compensación → fila “Indemnización / compensación”</h4>
@@ -1409,11 +1409,14 @@
         const dias = CFG.agui.find((t) => anios >= t[0])?.[1] ?? 15;
         const j = new Date(Date.UTC(r.b.getUTCFullYear(), 0, 1));
         const oct = new Date(Date.UTC(r.b.getUTCFullYear(), 9, 1));
-        const comp = r.b >= oct && anios >= 1;
+        const elegibleAguinaldo = anios >= 1;
+        const comp = elegibleAguinaldo && r.b >= oct;
         const fa = comp ? 1 : Math.min(1, Math.round((r.b - (r.a > j ? r.a : j)) / 864e5) / 360);
 
-        notas.push('Aguinaldo: ' + (comp ? 'completo (fin desde el 1 de octubre)' : 'proporcional (fin antes del 1 de octubre o menos de 1 año de servicio)'));
-        const agu = c(sd * dias * fa);
+        notas.push('Aguinaldo: ' + (!elegibleAguinaldo
+          ? 'no corresponde antes de cumplir 1 año de servicio'
+          : comp ? 'completo (fin desde el 1 de octubre)' : 'proporcional'));
+        const agu = elegibleAguinaldo ? c(sd * dias * fa) : 0;
 
         let ind = 0;
         if (mot === 'despido') {
